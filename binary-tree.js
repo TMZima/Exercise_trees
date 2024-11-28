@@ -178,7 +178,41 @@ class BinaryTree {
   /** Further study!
    * deserialize(stringTree): deserialize stringTree into a BinaryTree object. */
 
-  static deserialize() {}
+  static deserialize(stringTree) {
+    // If the string is empty, return null.
+    if (!stringTree) return null;
+    // If the string is 'null', return an empty tree.
+    if (stringTree === "null") return new BinaryTree();
+
+    // Parse the string into an array of values.
+    let values = JSON.parse(stringTree);
+
+    // Create a new BinaryTreeNode for each value in the array.
+    let nodes = values.map((val) =>
+      val !== null ? new BinaryTreeNode(val) : null
+    );
+
+    // Initialize a queue with the root node and an empty array to store the serialized tree
+    let queue = [nodes[0]];
+    let index = 1;
+
+    // Use BFS to traverse the tree level by level. For each node, add its left and right children.
+    while (queue.length) {
+      let node = queue.shift();
+      if (node) {
+        // Add the left child of the node.
+        node.left = nodes[index++];
+        // Add the right child of the node.
+        node.right = nodes[index++];
+        // Add the left and right children to the queue.
+        queue.push(node.left);
+        queue.push(node.right);
+      }
+    }
+
+    // Return a new BinaryTree object with the root node.
+    return new BinaryTree(nodes[0]);
+  }
 
   /** Further study!
    * lowestCommonAncestor(node1, node2): find the lowest common ancestor
