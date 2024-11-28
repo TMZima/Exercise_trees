@@ -79,7 +79,7 @@ class BinaryTree {
    * which is larger than lowerBound. Return null if no such value exists. */
 
   nextLarger(lowerBound) {
-    if (!this.root) return 0;
+    if (!this.root) return null;
     // Using BFS to traverse the tree.
     let queue = [this.root];
     let nextLarger = null;
@@ -218,7 +218,29 @@ class BinaryTree {
    * lowestCommonAncestor(node1, node2): find the lowest common ancestor
    * of two nodes in a binary tree. */
 
-  lowestCommonAncestor(node1, node2) {}
+  lowestCommonAncestor(node1, node2) {
+    // If the tree is empty, return null.
+    if (!this.root) return null;
+
+    // Helper function to find the lowest common ancestor of two nodes.
+    function lcaHelper(node, node1, node2) {
+      // If the current node is null or equal to either of the nodes, return the current node.
+      if (!node || node === node1 || node === node2) return node;
+
+      // Recursively find the lowest common ancestor in the left and right subtrees.
+      let left = lcaHelper(node.left, node1, node2);
+      let right = lcaHelper(node.right, node1, node2);
+
+      // If both left and right subtrees return a node, then the current node is the lowest common ancestor.
+      if (left && right) return node;
+
+      // If only one subtree returns a node, return that node.
+      return left || right;
+    }
+
+    // Call the helper function starting from the root node.
+    return lcaHelper(this.root, node1, node2);
+  }
 }
 
 module.exports = { BinaryTree, BinaryTreeNode };
