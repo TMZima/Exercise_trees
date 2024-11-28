@@ -103,7 +103,41 @@ class BinaryTree {
    * areCousins(node1, node2): determine whether two nodes are cousins
    * (i.e. are at the same level but have different parents. ) */
 
-  areCousins(node1, node2) {}
+  areCousins(node1, node2) {
+    // check to see if the tree is empty
+    if (!this.root) return false;
+    // check to see if the nodes are the root
+    if (node1 === this.root || node2 === this.root) return false;
+
+    // create a queue to store the nodes and their parents
+    let queue = [{ node: this.root, parent: null }];
+
+    // Use BFS to traverse the tree level by level
+    while (queue.length) {
+      let size = queue.length;
+      let parent1 = null;
+      let parent2 = null;
+
+      // Process all nodes at current level
+      for (let i = 0; i < size; i++) {
+        // Dequeue the first node and assign the returned object to currentNode and currentParent
+        let { node: currentNode, parent: currentParent } = queue.shift();
+
+        if (currentNode === node1) parent1 = currentParent;
+        if (currentNode === node2) parent2 = currentParent;
+
+        if (currentNode.left)
+          queue.push({ node: currentNode.left, parent: currentNode });
+        if (currentNode.right)
+          queue.push({ node: currentNode.right, parent: currentNode });
+      }
+
+      // After processing the current level, check if both nodes were found and have different parents
+      if (parent1 && parent2) return parent1 !== parent2;
+      if ((parent1 && !parent2) || (!parent1 && parent2)) return false;
+    }
+    return false;
+  }
 
   /** Further study!
    * serialize(tree): serialize the BinaryTree object tree into a string. */
