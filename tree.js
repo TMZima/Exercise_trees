@@ -43,7 +43,17 @@ class Tree {
   /** numGreater(lowerBound): return a count of the number of nodes
    * whose value is greater than lowerBound. */
 
-  numGreater(lowerBound) {}
+  numGreater(lowerBound, node = this.root) {
+    if (!node) return 0;
+    // Initialize 'count' to 1 if the current node's value is greater than the lowerBound, otherwise 0.
+    let count = node.val > lowerBound ? 1 : 0;
+    // Loop through each child of the current node.
+    for (let child of node.children) {
+      // Recursively call numGreater on each child and add the result to 'count'.
+      count += this.numGreater(lowerBound, child);
+    }
+    return count;
+  }
 }
 
 module.exports = { Tree, TreeNode };
