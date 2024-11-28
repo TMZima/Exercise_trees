@@ -142,7 +142,38 @@ class BinaryTree {
   /** Further study!
    * serialize(tree): serialize the BinaryTree object tree into a string. */
 
-  static serialize() {}
+  static serialize(tree) {
+    // Use BFS to traverse the tree level by level
+    // At each level, add the value of each node to a string.
+    // If a node is null, add 'null' to the string.
+    // Separate the values with commas.
+    // Return the string.
+
+    // If tree is empty, return 'null'
+    if (!tree.root) return "null";
+
+    // Initialize a queue with the root node and an empty array to store the serialized tree
+    let queue = [tree.root];
+    let result = [];
+
+    // Use BFS to traverse the tree level by level. For each node, add its value to the 'result' array.
+    while (queue.length) {
+      let node = queue.shift();
+      if (node) {
+        // If the node is not null, add its value to the 'result' array.
+        result.push(node.val);
+        // Add the left and right children of the node to the queue.
+        queue.push(node.left);
+        queue.push(node.right);
+      } else {
+        // If the node is null, add 'null' to the 'result' array.
+        result.push(null);
+      }
+    }
+
+    // Convert the 'result' array to a string and return it.
+    return JSON.stringify(result);
+  }
 
   /** Further study!
    * deserialize(stringTree): deserialize stringTree into a BinaryTree object. */
